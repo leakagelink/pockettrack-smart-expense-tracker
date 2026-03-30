@@ -4,6 +4,7 @@ import { useTransactions } from '@/context/TransactionContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import CategoryIcon from './CategoryIcon';
 import { Trash2, X } from 'lucide-react';
+import { AdBanner } from './AdMob';
 
 export default function HistoryScreen() {
   const { transactions, getCategory, deleteTransaction, categories } = useTransactions();
@@ -106,6 +107,9 @@ export default function HistoryScreen() {
           ))}
         </div>
       )}
+
+      {/* Ad Banner */}
+      <AdBanner size="banner" className="mt-4" />
     </div>
   );
 }

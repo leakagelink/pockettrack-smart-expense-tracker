@@ -5,6 +5,7 @@ import { useCurrency } from '@/context/CurrencyContext';
 import CategoryIcon from './CategoryIcon';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import logo from '@/assets/logo.jpeg';
+import { AdBanner } from './AdMob';
 
 export default function DashboardScreen() {
   const { totalBalance, todaySpending, weekSpending, monthSpending, monthIncome, transactions, categories, getCategory } = useTransactions();
@@ -87,6 +88,9 @@ export default function DashboardScreen() {
         ))}
       </motion.div>
 
+      {/* Ad Banner */}
+      <AdBanner size="banner" />
+
       {/* Spending Chart */}
       {pieData.length > 0 && (
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="glass-card rounded-2xl p-5">
@@ -146,6 +150,9 @@ export default function DashboardScreen() {
           </div>
         )}
       </motion.div>
+
+      {/* Bottom Ad */}
+      <AdBanner size="large-banner" />
     </div>
   );
 }

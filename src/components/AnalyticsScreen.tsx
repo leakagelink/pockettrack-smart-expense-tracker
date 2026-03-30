@@ -4,6 +4,7 @@ import { useTransactions } from '@/context/TransactionContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Area, AreaChart } from 'recharts';
 import { TrendingUp, TrendingDown, Wallet, Target, ArrowUpRight, ArrowDownLeft } from 'lucide-react';
+import { AdBanner } from './AdMob';
 
 const cardVariants = {
   hidden: { opacity: 0, y: 30, scale: 0.95 },
@@ -401,6 +402,9 @@ export default function AnalyticsScreen() {
           </div>
         </motion.div>
       )}
+
+      {/* Ad Banner */}
+      <AdBanner size="large-banner" />
     </div>
   );
 }
