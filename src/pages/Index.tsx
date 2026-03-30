@@ -8,6 +8,7 @@ import AddTransactionScreen from '@/components/AddTransactionScreen';
 import HistoryScreen from '@/components/HistoryScreen';
 import AnalyticsScreen from '@/components/AnalyticsScreen';
 import SettingsScreen from '@/components/SettingsScreen';
+import SplashScreen from '@/components/SplashScreen';
 
 const screens: Record<Tab, React.ComponentType<any>> = {
   dashboard: DashboardScreen,
@@ -19,31 +20,36 @@ const screens: Record<Tab, React.ComponentType<any>> = {
 
 export default function Index() {
   const [activeTab, setActiveTab] = useState<Tab>('dashboard');
+  const [showSplash, setShowSplash] = useState(true);
 
   const Screen = screens[activeTab];
 
   return (
     <CurrencyProvider>
-    <TransactionProvider>
-      <div className="min-h-screen bg-background">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.2 }}
-          >
-            {activeTab === 'add' ? (
-              <AddTransactionScreen onDone={setActiveTab} />
+      <TransactionProvider>
+        <div className="min-h-screen bg-background">
+          <AnimatePresence mode="wait">
+            {showSplash ? (
+              <SplashScreen key="splash" onFinish={() => setShowSplash(false)} />
             ) : (
-              <Screen />
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2 }}
+              >
+                {activeTab === 'add' ? (
+                  <AddTransactionScreen onDone={setActiveTab} />
+                ) : (
+                  <Screen />
+                )}
+              </motion.div>
             )}
-          </motion.div>
-        </AnimatePresence>
-        <BottomNav active={activeTab} onChange={setActiveTab} />
-      </div>
-    </TransactionProvider>
+          </AnimatePresence>
+          {!showSplash && <BottomNav active={activeTab} onChange={setActiveTab} />}
+        </div>
+      </TransactionProvider>
     </CurrencyProvider>
   );
 }
