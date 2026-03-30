@@ -1,16 +1,46 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { TransactionProvider } from '@/context/TransactionContext';
+import BottomNav, { Tab } from '@/components/BottomNav';
+import DashboardScreen from '@/components/DashboardScreen';
+import AddTransactionScreen from '@/components/AddTransactionScreen';
+import HistoryScreen from '@/components/HistoryScreen';
+import AnalyticsScreen from '@/components/AnalyticsScreen';
+import SettingsScreen from '@/components/SettingsScreen';
 
-// IMPORTANT: Fully REPLACE this with your own code
-const PlaceholderIndex = () => {
-  // PLACEHOLDER: Replace this entire return statement with the user's app.
-  // The inline background color is intentionally not part of the design system.
-  return (
-    <div className="flex min-h-screen items-center justify-center" style={{ backgroundColor: '#fcfbf8' }}>
-      <img data-lovable-blank-page-placeholder="REMOVE_THIS" src="/placeholder.svg" alt="Your app will live here!" />
-    </div>
-  );
+const screens: Record<Tab, React.ComponentType<any>> = {
+  dashboard: DashboardScreen,
+  history: HistoryScreen,
+  add: AddTransactionScreen,
+  analytics: AnalyticsScreen,
+  settings: SettingsScreen,
 };
 
-const Index = PlaceholderIndex;
+export default function Index() {
+  const [activeTab, setActiveTab] = useState<Tab>('dashboard');
 
-export default Index;
+  const Screen = screens[activeTab];
+
+  return (
+    <TransactionProvider>
+      <div className="min-h-screen bg-background">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2 }}
+          >
+            {activeTab === 'add' ? (
+              <AddTransactionScreen onDone={setActiveTab} />
+            ) : (
+              <Screen />
+            )}
+          </motion.div>
+        </AnimatePresence>
+        <BottomNav active={activeTab} onChange={setActiveTab} />
+      </div>
+    </TransactionProvider>
+  );
+}
