@@ -150,6 +150,18 @@ export default function SettingsScreen() {
           ))}
         </div>
       </motion.div>
+
+      {/* Footer */}
+      <div className="text-center pt-4 pb-2">
+        <a
+          href="https://socilet.in"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs text-muted-foreground hover:text-primary transition-colors"
+        >
+          Design by <span className="font-semibold">Socilet</span>
+        </a>
+      </div>
     </div>
   );
 }
