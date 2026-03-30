@@ -4,6 +4,7 @@ import { useTransactions } from '@/context/TransactionContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import CategoryIcon from './CategoryIcon';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import logo from '@/assets/logo.jpeg';
 
 export default function DashboardScreen() {
   const { totalBalance, todaySpending, weekSpending, monthSpending, monthIncome, transactions, categories, getCategory } = useTransactions();
@@ -32,9 +33,12 @@ export default function DashboardScreen() {
     <div className="px-4 pt-6 pb-24 max-w-lg mx-auto space-y-6">
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
-        <div>
-          <p className="text-muted-foreground text-sm">Welcome back 👋</p>
-          <h1 className="text-2xl font-bold font-heading">PocketTrack</h1>
+        <div className="flex items-center gap-3">
+          <img src={logo} alt="PocketTrack" className="w-10 h-10 rounded-xl shadow-md object-cover" />
+          <div>
+            <p className="text-muted-foreground text-sm">Welcome back 👋</p>
+            <h1 className="text-2xl font-bold font-heading">PocketTrack</h1>
+          </div>
         </div>
       </motion.div>
 
