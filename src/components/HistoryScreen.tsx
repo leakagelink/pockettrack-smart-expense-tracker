@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTransactions } from '@/context/TransactionContext';
+import { useCurrency } from '@/context/CurrencyContext';
 import CategoryIcon from './CategoryIcon';
 import { Trash2, X } from 'lucide-react';
 
@@ -26,7 +27,7 @@ export default function HistoryScreen() {
     return Object.entries(map);
   }, [filtered]);
 
-  const formatCurrency = (n: number) => `$${n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  const { formatCurrency } = useCurrency();
 
   const handleDelete = (id: string) => {
     if (deletingId === id) {

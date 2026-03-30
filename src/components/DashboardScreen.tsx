@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { ArrowDownLeft, ArrowUpRight, TrendingUp } from 'lucide-react';
 import { useTransactions } from '@/context/TransactionContext';
+import { useCurrency } from '@/context/CurrencyContext';
 import CategoryIcon from './CategoryIcon';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 
@@ -25,7 +26,7 @@ export default function DashboardScreen() {
     .sort((a, b) => b.value - a.value)
     .slice(0, 5);
 
-  const formatCurrency = (n: number) => `$${Math.abs(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  const { formatCurrency } = useCurrency();
 
   return (
     <div className="px-4 pt-6 pb-24 max-w-lg mx-auto space-y-6">
