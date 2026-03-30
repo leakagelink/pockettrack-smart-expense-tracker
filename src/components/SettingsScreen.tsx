@@ -3,8 +3,11 @@ import { motion } from 'framer-motion';
 import { useTransactions } from '@/context/TransactionContext';
 import { useCurrency, currencies } from '@/context/CurrencyContext';
 import CategoryIcon from './CategoryIcon';
-import { Plus, Palette, Coins } from 'lucide-react';
+import { Plus, Palette, Coins, Shield, FileText, Info, Trash2, ChevronRight, ExternalLink } from 'lucide-react';
 import { TransactionType } from '@/types/transaction';
+import PrivacyPolicy from './PrivacyPolicy';
+import TermsOfService from './TermsOfService';
+import AboutPage from './AboutPage';
 
 const colorOptions = [
   '0 72% 55%', '24 95% 53%', '37 95% 55%', '152 60% 45%', '162 63% 41%',
@@ -17,8 +20,10 @@ const iconOptions = [
   'Briefcase', 'Laptop', 'TrendingUp', 'Wallet', 'Banknote', 'Star',
 ];
 
+type SubPage = 'none' | 'privacy' | 'terms' | 'about';
+
 export default function SettingsScreen() {
-  const { categories, addCategory } = useTransactions();
+  const { categories, addCategory, clearAllData } = useTransactions();
   const { currency, setCurrency } = useCurrency();
   const [showAddForm, setShowAddForm] = useState(false);
   const [newName, setNewName] = useState('');
@@ -26,6 +31,8 @@ export default function SettingsScreen() {
   const [newIcon, setNewIcon] = useState(iconOptions[0]);
   const [newType, setNewType] = useState<TransactionType>('expense');
   const [isDark, setIsDark] = useState(document.documentElement.classList.contains('dark'));
+  const [subPage, setSubPage] = useState<SubPage>('none');
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const toggleDark = () => {
     document.documentElement.classList.toggle('dark');
@@ -38,6 +45,16 @@ export default function SettingsScreen() {
     setNewName('');
     setShowAddForm(false);
   };
+
+  const handleDeleteAll = () => {
+    clearAllData();
+    setShowDeleteConfirm(false);
+  };
+
+  // Sub-page routing
+  if (subPage === 'privacy') return <PrivacyPolicy onBack={() => setSubPage('none')} />;
+  if (subPage === 'terms') return <TermsOfService onBack={() => setSubPage('none')} />;
+  if (subPage === 'about') return <AboutPage onBack={() => setSubPage('none')} />;
 
   return (
     <div className="px-4 pt-6 pb-24 max-w-lg mx-auto space-y-5">
@@ -149,6 +166,62 @@ export default function SettingsScreen() {
             </div>
           ))}
         </div>
+      </motion.div>
+
+      {/* Legal & Policy Section */}
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
+        className="glass-card rounded-2xl overflow-hidden divide-y divide-border">
+        <button onClick={() => setSubPage('privacy')} className="w-full flex items-center gap-3 p-4 hover:bg-secondary/50 transition-colors">
+          <Shield size={18} className="text-muted-foreground" />
+          <span className="text-sm font-medium flex-1 text-left">Privacy Policy</span>
+          <ChevronRight size={16} className="text-muted-foreground" />
+        </button>
+        <button onClick={() => setSubPage('terms')} className="w-full flex items-center gap-3 p-4 hover:bg-secondary/50 transition-colors">
+          <FileText size={18} className="text-muted-foreground" />
+          <span className="text-sm font-medium flex-1 text-left">Terms of Service</span>
+          <ChevronRight size={16} className="text-muted-foreground" />
+        </button>
+        <button onClick={() => setSubPage('about')} className="w-full flex items-center gap-3 p-4 hover:bg-secondary/50 transition-colors">
+          <Info size={18} className="text-muted-foreground" />
+          <span className="text-sm font-medium flex-1 text-left">About</span>
+          <ChevronRight size={16} className="text-muted-foreground" />
+        </button>
+      </motion.div>
+
+      {/* Data Management */}
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+        className="glass-card rounded-2xl p-4 space-y-3">
+        <h3 className="text-sm font-semibold font-heading flex items-center gap-2">
+          <Trash2 size={16} className="text-destructive" /> Data Management
+        </h3>
+        <p className="text-[10px] text-muted-foreground">All your data is stored locally on this device. Deleting data is permanent and cannot be undone.</p>
+
+        {!showDeleteConfirm ? (
+          <button
+            onClick={() => setShowDeleteConfirm(true)}
+            className="w-full py-2.5 rounded-xl border border-destructive/30 text-destructive text-xs font-semibold hover:bg-destructive/10 transition-colors"
+          >
+            Delete All Data
+          </button>
+        ) : (
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="space-y-2">
+            <p className="text-xs text-destructive font-medium text-center">⚠️ Are you sure? This will delete all transactions and custom categories.</p>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                className="flex-1 py-2.5 rounded-xl bg-secondary text-secondary-foreground text-xs font-semibold"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteAll}
+                className="flex-1 py-2.5 rounded-xl bg-destructive text-destructive-foreground text-xs font-semibold"
+              >
+                Delete Everything
+              </button>
+            </div>
+          </motion.div>
+        )}
       </motion.div>
 
       {/* Footer */}

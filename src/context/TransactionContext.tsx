@@ -9,6 +9,7 @@ interface TransactionContextType {
   updateTransaction: (t: Transaction) => void;
   deleteTransaction: (id: string) => void;
   addCategory: (c: Omit<Category, 'id'>) => void;
+  clearAllData: () => void;
   getCategory: (id: string) => Category | undefined;
   totalBalance: number;
   todaySpending: number;
@@ -54,6 +55,11 @@ export function TransactionProvider({ children }: { children: React.ReactNode })
 
   const getCategory = useCallback((id: string) => categories.find(c => c.id === id), [categories]);
 
+  const clearAllData = useCallback(() => {
+    setTransactions([]);
+    setCategories(defaultCategories);
+  }, []);
+
   const now = new Date();
   const todayStr = now.toISOString().slice(0, 10);
   const weekAgo = new Date(now.getTime() - 7 * 86400000).toISOString();
@@ -68,7 +74,7 @@ export function TransactionProvider({ children }: { children: React.ReactNode })
   return (
     <TransactionContext.Provider value={{
       transactions, categories, addTransaction, updateTransaction, deleteTransaction,
-      addCategory, getCategory, totalBalance, todaySpending, weekSpending, monthSpending, monthIncome,
+      addCategory, getCategory, clearAllData, totalBalance, todaySpending, weekSpending, monthSpending, monthIncome,
     }}>
       {children}
     </TransactionContext.Provider>
