@@ -9,6 +9,7 @@ interface TransactionContextType {
   updateTransaction: (t: Transaction) => void;
   deleteTransaction: (id: string) => void;
   addCategory: (c: Omit<Category, 'id'>) => void;
+  clearAllData: () => void;
   getCategory: (id: string) => Category | undefined;
   totalBalance: number;
   todaySpending: number;
