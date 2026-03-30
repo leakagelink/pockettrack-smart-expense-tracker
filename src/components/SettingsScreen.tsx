@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTransactions } from '@/context/TransactionContext';
+import { useCurrency, currencies } from '@/context/CurrencyContext';
 import CategoryIcon from './CategoryIcon';
-import { Plus, Palette, Tag } from 'lucide-react';
-import { TransactionType, Category } from '@/types/transaction';
+import { Plus, Palette, Coins } from 'lucide-react';
+import { TransactionType } from '@/types/transaction';
 
 const colorOptions = [
   '0 72% 55%', '24 95% 53%', '37 95% 55%', '152 60% 45%', '162 63% 41%',
@@ -18,6 +19,7 @@ const iconOptions = [
 
 export default function SettingsScreen() {
   const { categories, addCategory } = useTransactions();
+  const { currency, setCurrency } = useCurrency();
   const [showAddForm, setShowAddForm] = useState(false);
   const [newName, setNewName] = useState('');
   const [newColor, setNewColor] = useState(colorOptions[0]);
@@ -43,8 +45,32 @@ export default function SettingsScreen() {
         <h1 className="text-2xl font-bold font-heading">Settings</h1>
       </motion.div>
 
+      {/* Currency Selector */}
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="glass-card rounded-2xl p-4 space-y-3">
+        <div className="flex items-center gap-3">
+          <Coins size={18} className="text-muted-foreground" />
+          <span className="text-sm font-medium">Currency</span>
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          {currencies.map(c => (
+            <button
+              key={c.code}
+              onClick={() => setCurrency(c)}
+              className={`py-3 rounded-xl text-center transition-all ${
+                currency.code === c.code
+                  ? 'bg-primary text-primary-foreground shadow-md'
+                  : 'bg-secondary text-secondary-foreground'
+              }`}
+            >
+              <span className="text-lg font-bold font-heading">{c.symbol}</span>
+              <p className="text-[10px] font-medium mt-0.5">{c.code}</p>
+            </button>
+          ))}
+        </div>
+      </motion.div>
+
       {/* Appearance */}
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="glass-card rounded-2xl p-4">
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="glass-card rounded-2xl p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Palette size={18} className="text-muted-foreground" />

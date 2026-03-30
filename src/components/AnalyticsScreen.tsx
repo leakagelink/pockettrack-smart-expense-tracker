@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTransactions } from '@/context/TransactionContext';
+import { useCurrency } from '@/context/CurrencyContext';
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 
 export default function AnalyticsScreen() {
@@ -52,7 +53,7 @@ export default function AnalyticsScreen() {
     return data;
   }, [periodTransactions, period, now]);
 
-  const formatCurrency = (n: number) => `$${n.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+  const { formatCurrency } = useCurrency();
 
   return (
     <div className="px-4 pt-6 pb-24 max-w-lg mx-auto space-y-5">

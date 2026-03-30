@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { TransactionProvider } from '@/context/TransactionContext';
+import { CurrencyProvider } from '@/context/CurrencyContext';
 import BottomNav, { Tab } from '@/components/BottomNav';
 import DashboardScreen from '@/components/DashboardScreen';
 import AddTransactionScreen from '@/components/AddTransactionScreen';
@@ -22,6 +23,7 @@ export default function Index() {
   const Screen = screens[activeTab];
 
   return (
+    <CurrencyProvider>
     <TransactionProvider>
       <div className="min-h-screen bg-background">
         <AnimatePresence mode="wait">
@@ -42,5 +44,6 @@ export default function Index() {
         <BottomNav active={activeTab} onChange={setActiveTab} />
       </div>
     </TransactionProvider>
+    </CurrencyProvider>
   );
 }

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTransactions } from '@/context/TransactionContext';
+import { useCurrency } from '@/context/CurrencyContext';
 import { TransactionType } from '@/types/transaction';
 import CategoryIcon from './CategoryIcon';
 import { Check } from 'lucide-react';
@@ -12,6 +13,7 @@ interface AddTransactionScreenProps {
 
 export default function AddTransactionScreen({ onDone }: AddTransactionScreenProps) {
   const { categories, addTransaction } = useTransactions();
+  const { currency } = useCurrency();
   const [type, setType] = useState<TransactionType>('expense');
   const [amount, setAmount] = useState('');
   const [categoryId, setCategoryId] = useState('');
@@ -88,7 +90,7 @@ export default function AddTransactionScreen({ onDone }: AddTransactionScreenPro
       >
         <p className="text-xs text-muted-foreground mb-2">Amount</p>
         <div className="flex items-center justify-center gap-1">
-          <span className="text-3xl font-bold font-heading text-muted-foreground">$</span>
+          <span className="text-3xl font-bold font-heading text-muted-foreground">{currency.symbol}</span>
           <input
             type="number"
             value={amount}
@@ -104,7 +106,7 @@ export default function AddTransactionScreen({ onDone }: AddTransactionScreenPro
               onClick={() => setAmount(String(a))}
               className="px-4 py-1.5 rounded-full bg-secondary text-secondary-foreground text-xs font-medium hover:bg-primary hover:text-primary-foreground transition-colors"
             >
-              ${a}
+              {currency.symbol}{a}
             </button>
           ))}
         </div>
