@@ -9,7 +9,7 @@ const cardVariants = {
   hidden: { opacity: 0, y: 30, scale: 0.95 },
   visible: (i: number) => ({
     opacity: 1, y: 0, scale: 1,
-    transition: { delay: i * 0.08, type: 'spring', stiffness: 100, damping: 15 }
+    transition: { delay: i * 0.08, type: 'spring' as const, stiffness: 100, damping: 15 }
   }),
 };
 
