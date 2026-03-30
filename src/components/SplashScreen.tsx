@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import logo from '@/assets/logo.jpeg';
 
@@ -6,14 +7,16 @@ interface SplashScreenProps {
 }
 
 export default function SplashScreen({ onFinish }: SplashScreenProps) {
+  useEffect(() => {
+    const timer = setTimeout(() => onFinish(), 3000);
+    return () => clearTimeout(timer);
+  }, [onFinish]);
+
   return (
     <motion.div
       className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background overflow-hidden"
-      initial={{ opacity: 1 }}
-      animate={{ opacity: 1 }}
       exit={{ opacity: 0, scale: 1.1 }}
       transition={{ duration: 0.5, ease: 'easeInOut' }}
-      onAnimationComplete={() => {}}
     >
       {/* Animated background circles */}
       <div className="absolute inset-0 overflow-hidden">
@@ -124,13 +127,6 @@ export default function SplashScreen({ onFinish }: SplashScreenProps) {
         </div>
       </motion.div>
 
-      {/* Auto-dismiss after 2.5s */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0 }}
-        transition={{ delay: 2.5 }}
-        onAnimationComplete={() => onFinish()}
-      />
     </motion.div>
   );
 }
