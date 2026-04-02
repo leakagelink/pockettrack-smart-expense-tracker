@@ -23,7 +23,7 @@ export default function AddTransactionScreen({ onDone }: AddTransactionScreenPro
 
   const filteredCategories = categories.filter(c => c.type === type);
 
-  const quickAmounts = type === 'expense' ? [5, 10, 20, 50, 100] : [100, 500, 1000, 2000, 5000];
+  const quickAmounts = [100, 500, 1000, 2000, 5000];
 
   const handleSubmit = () => {
     if (!amount || !categoryId) return;
